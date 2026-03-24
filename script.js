@@ -33,7 +33,7 @@ const state = {
   category: "全部"
 };
 
-const FEISHU_WEBHOOK = "https://open.feishu.cn/open-apis/bot/v2/hook/26b09b67-8db6-4885-a3ab-b98dacb7d7ed";
+const TICKET_API_URL = "";
 const RECEIVER_EMAIL = "18562703379@163.com";
 
 const searchInput = document.getElementById("searchInput");
@@ -126,23 +126,12 @@ function buildMailtoLink(formData) {
   return `mailto:${RECEIVER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
-async function submitTicketToFeishu(formData) {
-  if (!FEISHU_WEBHOOK) return false;
-  const text = [
-    "企鹅AI基地收到新工单：",
-    `称呼：${formData.name}`,
-    `联系方式：${formData.contact}`,
-    `标题：${formData.title}`,
-    `内容：${formData.content}`
-  ].join("\n");
-
-  const response = await fetch(FEISHU_WEBHOOK, {
+async function submitTicketToApi(formData) {
+  if (!TICKET_API_URL) return false;
+  const response = await fetch(TICKET_API_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      msg_type: "text",
-      content: { text }
-    })
+    body: JSON.stringify(formData)
   });
   return response.ok;
 }
@@ -170,24 +159,24 @@ function initTicketForm() {
 
     ticketStatus.textContent = "正在提交...";
     try {
-      const ok = await submitTicketToFeishu(formData);
+      const ok = await submitTicketToApi(formData);
       if (ok) {
-        ticketStatus.textContent = "提交成功，已发送到飞书机器人。";
+        ticketStatus.textContent = "提交成功，已通过安全中转发送。";
         ticketForm.reset();
         return;
       }
       if (RECEIVER_EMAIL) {
         window.location.href = buildMailtoLink(formData);
-        ticketStatus.textContent = "飞书未配置，已切换到邮件发送。";
+        ticketStatus.textContent = "中转接口未配置，已切换到邮件发送。";
       } else {
-        ticketStatus.textContent = "未配置飞书和邮箱，请先在 script.js 里配置。";
+        ticketStatus.textContent = "未配置中转接口和邮箱，请先在 script.js 里配置。";
       }
     } catch (error) {
       if (RECEIVER_EMAIL) {
         window.location.href = buildMailtoLink(formData);
-        ticketStatus.textContent = "飞书发送失败，已切换到邮件发送。";
+        ticketStatus.textContent = "中转发送失败，已切换到邮件发送。";
       } else {
-        ticketStatus.textContent = "提交失败：请检查飞书 Webhook 或邮箱配置。";
+        ticketStatus.textContent = "提交失败：请检查中转接口或邮箱配置。";
       }
     }
   });
