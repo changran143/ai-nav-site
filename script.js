@@ -24,7 +24,7 @@ const tools = [
 
   { name: "Cursor", category: "AI 编程", desc: "面向开发者的 AI IDE。", url: "https://www.cursor.com/" },
   { name: "VS Code", category: "AI 编程", desc: "开发者常用编辑器，可搭配多种 AI 插件。", url: "https://code.visualstudio.com/" },
-  { name: "OpenClaw", category: "AI 自动化", desc: "开源智能体/自动化工作流方向工具。", url: "https://github.com/" },
+  { name: "OpenClaw", category: "AI 自动化", desc: "开源智能体/自动化工作流方向工具。", url: "https://openclaw.ai/" },
   { name: "n8n", category: "AI 自动化", desc: "低代码自动化流程平台。", url: "https://n8n.io/" }
 ];
 
