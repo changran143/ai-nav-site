@@ -3,34 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI 工具导航站</title>
+  <title>企鹅AI基地</title>
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">你的 AI 导航站</div>
-    <div class="tip">零基础也能维护</div>
+  <header class="topbar container">
+    <div class="brand-wrap">
+      <div class="brand">企鹅AI基地</div>
+      <div class="tip">你的 AI 导航与学习门户</div>
+    </div>
+    <div class="top-actions">
+      <button id="themeToggle" class="theme-toggle" type="button">切换浅色</button>
+    </div>
   </header>
 
+  <nav class="main-nav container">
+    <a href="#home">首页</a>
+    <a href="#tools">AI工具合集</a>
+    <a href="#community">AI交流社区</a>
+    <a href="#knowledge">AI知识库</a>
+    <a href="#learning">AI学习资源</a>
+    <a href="#ticket">工单</a>
+    <a href="#about">关于我们</a>
+  </nav>
+
   <main class="container">
-    <section class="hero">
-      <h1>发现好用的 AI 工具</h1>
-      <p>搜索、筛选并快速访问你常用的 AI 平台</p>
+    <section id="home" class="hero section-card">
+      <h1>发现、学习、交流，一站式搞定 AI</h1>
+      <p>从工具导航到学习资源，再到需求工单，企鹅AI基地帮你持续成长。</p>
     </section>
 
-    <section class="controls">
-      <input id="searchInput" type="text" placeholder="输入工具名或描述关键词..." />
-      <div id="categoryTabs" class="tabs"></div>
-    </section>
-
-    <section>
+    <section id="tools" class="section-card">
+      <h2>AI工具合集</h2>
+      <div class="controls">
+        <input id="searchInput" type="text" placeholder="输入工具名或描述关键词..." />
+        <div id="categoryTabs" class="tabs"></div>
+      </div>
       <div id="resultMeta" class="result-meta"></div>
       <div id="toolGrid" class="tool-grid"></div>
+    </section>
+
+    <section id="community" class="section-card">
+      <h2>AI交流社区</h2>
+      <p class="section-desc">欢迎加入你的飞书群、微信群、QQ群，把链接改到下方按钮即可。</p>
+      <div class="quick-links">
+        <a class="btn-link" href="https://www.feishu.cn/" target="_blank" rel="noopener noreferrer">飞书社区</a>
+        <a class="btn-link" href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub 讨论区</a>
+      </div>
+    </section>
+
+    <section id="knowledge" class="section-card">
+      <h2>AI知识库</h2>
+      <p class="section-desc">可放你的教程文档、术语说明、常见问题，后续可升级成独立文档站。</p>
+      <ul class="simple-list">
+        <li>入门概念：大模型、提示词、工作流</li>
+        <li>实战流程：选工具 -> 做 Demo -> 迭代上线</li>
+        <li>避坑指南：版权、数据安全、账号风控</li>
+      </ul>
+    </section>
+
+    <section id="learning" class="section-card">
+      <h2>AI学习资源</h2>
+      <p class="section-desc">整理课程、教程、案例站，建议每周更新一次。</p>
+      <ul class="simple-list">
+        <li><a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">视频学习平台（示例）</a></li>
+        <li><a href="https://github.com/trending" target="_blank" rel="noopener noreferrer">开源项目趋势</a></li>
+        <li><a href="https://www.bilibili.com/" target="_blank" rel="noopener noreferrer">B站 AI 学习内容</a></li>
+      </ul>
+    </section>
+
+    <section id="ticket" class="section-card">
+      <h2>工单</h2>
+      <p class="section-desc">所有人都可以给你提需求。提交后会尝试发到飞书机器人；也支持直接发邮件给你。</p>
+      <form id="ticketForm" class="ticket-form">
+        <input id="ticketName" name="name" type="text" placeholder="你的称呼" required />
+        <input id="ticketContact" name="contact" type="text" placeholder="联系方式（邮箱/微信）" required />
+        <input id="ticketTitle" name="title" type="text" placeholder="需求标题" required />
+        <textarea id="ticketContent" name="content" rows="5" placeholder="请描述你的需求..." required></textarea>
+        <div class="ticket-actions">
+          <button type="submit" class="btn-primary">提交工单</button>
+          <a id="emailFallback" class="btn-link" href="#">邮件提交（兜底）</a>
+        </div>
+        <p id="ticketStatus" class="ticket-status"></p>
+      </form>
+    </section>
+
+    <section id="about" class="section-card">
+      <h2>关于我们</h2>
+      <p class="section-desc">企鹅AI基地专注于 AI 工具导航、学习沉淀和需求协作。</p>
     </section>
   </main>
 
   <footer class="footer">
-    <p>© <span id="year"></span> 你的 AI 导航站 · 仅供学习与分享</p>
+    <p>© <span id="year"></span> 企鹅AI基地 · 仅供学习与分享</p>
   </footer>
 
   <script src="./script.js"></script>

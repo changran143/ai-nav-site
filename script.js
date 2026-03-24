@@ -1,76 +1,31 @@
 const tools = [
-  {
-    name: "ChatGPT",
-    category: "AI 对话",
-    desc: "通用 AI 助手，适合写作、编程、学习和问答。",
-    url: "https://chatgpt.com/"
-  },
-  {
-    name: "Claude",
-    category: "AI 对话",
-    desc: "擅长长文处理与结构化输出，适合文档与代码任务。",
-    url: "https://claude.ai/"
-  },
-  {
-    name: "Gemini",
-    category: "AI 对话",
-    desc: "Google 的多模态助手，可用于搜索、创作和分析。",
-    url: "https://gemini.google.com/"
-  },
-  {
-    name: "Midjourney",
-    category: "AI 绘图",
-    desc: "高质量文生图工具，常用于设计灵感和视觉素材生成。",
-    url: "https://www.midjourney.com/"
-  },
-  {
-    name: "Stable Diffusion Web",
-    category: "AI 绘图",
-    desc: "开源生态强，风格可控性高，适合进阶图像生成。",
-    url: "https://stability.ai/"
-  },
-  {
-    name: "Runway",
-    category: "AI 视频",
-    desc: "AI 视频生成与编辑平台，支持文本转视频。",
-    url: "https://runwayml.com/"
-  },
-  {
-    name: "Pika",
-    category: "AI 视频",
-    desc: "快速生成短视频内容，适合自媒体创作。",
-    url: "https://pika.art/"
-  },
-  {
-    name: "Notion AI",
-    category: "效率办公",
-    desc: "文档写作、总结、改写一体化，提升团队协作效率。",
-    url: "https://www.notion.so/product/ai"
-  },
-  {
-    name: "Perplexity",
-    category: "AI 搜索",
-    desc: "带来源引用的 AI 搜索问答工具，适合做信息调研。",
-    url: "https://www.perplexity.ai/"
-  },
-  {
-    name: "GitHub Copilot",
-    category: "AI 编程",
-    desc: "代码补全与智能建议，提升开发效率。",
-    url: "https://github.com/features/copilot"
-  },
-  {
-    name: "Cursor",
-    category: "AI 编程",
-    desc: "面向开发者的 AI IDE，支持代码理解和自动修改。",
-    url: "https://www.cursor.com/"
-  },
-  {
-    name: "飞书妙记",
-    category: "效率办公",
-    desc: "会议转写与总结助手，适合整理沟通纪要。",
-    url: "https://www.feishu.cn/"
-  }
+  { name: "ChatGPT", category: "AI 对话", desc: "通用 AI 助手，适合写作、编程、学习和问答。", url: "https://chatgpt.com/" },
+  { name: "Claude", category: "AI 对话", desc: "擅长长文处理与结构化输出。", url: "https://claude.ai/" },
+  { name: "Gemini", category: "AI 对话", desc: "Google 的多模态 AI 助手。", url: "https://gemini.google.com/" },
+  { name: "豆包", category: "AI 对话", desc: "字节系 AI 对话助手。", url: "https://www.doubao.com/" },
+  { name: "Gork", category: "AI 对话", desc: "按你要求加入的对话工具。", url: "https://x.ai/" },
+  { name: "文心一言", category: "AI 对话", desc: "百度推出的对话大模型应用。", url: "https://yiyan.baidu.com/" },
+  { name: "Kimi", category: "AI 对话", desc: "擅长长上下文处理和信息整理。", url: "https://kimi.moonshot.cn/" },
+  { name: "智谱清言", category: "AI 对话", desc: "智谱推出的 AI 对话助手。", url: "https://chatglm.cn/" },
+
+  { name: "Midjourney", category: "AI 绘画", desc: "高质量文生图工具。", url: "https://www.midjourney.com/" },
+  { name: "Stable Diffusion", category: "AI 绘画", desc: "开源生态强，风格可控性高。", url: "https://stability.ai/" },
+  { name: "吐司", category: "AI 绘画", desc: "按你要求加入的 AI 绘画平台。", url: "https://tusiart.com/" },
+  { name: "即梦", category: "AI 绘画", desc: "字节系图像/创意生成平台。", url: "https://jimeng.jianying.com/" },
+  { name: "可灵", category: "AI 绘画", desc: "可用于图像和视频创作。", url: "https://klingai.com/" },
+  { name: "堆友", category: "AI 绘画", desc: "设计与创意素材社区工具。", url: "https://d.design/" },
+
+  { name: "Runway", category: "AI 视频", desc: "AI 视频生成与编辑平台。", url: "https://runwayml.com/" },
+  { name: "Pika", category: "AI 视频", desc: "适合快速做短视频内容。", url: "https://pika.art/" },
+  { name: "可灵", category: "AI 视频", desc: "支持文本转视频等能力。", url: "https://klingai.com/" },
+  { name: "海螺", category: "AI 视频", desc: "按你要求加入的视频工具。", url: "https://hailuoai.com/" },
+  { name: "Vidu", category: "AI 视频", desc: "文生视频平台。", url: "https://www.vidu.studio/" },
+  { name: "TAPNOW", category: "AI 视频", desc: "按你要求加入的视频工具。", url: "https://tapnow.ai/" },
+
+  { name: "Cursor", category: "AI 编程", desc: "面向开发者的 AI IDE。", url: "https://www.cursor.com/" },
+  { name: "VS Code", category: "AI 编程", desc: "开发者常用编辑器，可搭配多种 AI 插件。", url: "https://code.visualstudio.com/" },
+  { name: "OpenClaw", category: "AI 自动化", desc: "开源智能体/自动化工作流方向工具。", url: "https://github.com/" },
+  { name: "n8n", category: "AI 自动化", desc: "低代码自动化流程平台。", url: "https://n8n.io/" }
 ];
 
 const state = {
@@ -78,10 +33,17 @@ const state = {
   category: "全部"
 };
 
+const FEISHU_WEBHOOK = "https://open.feishu.cn/open-apis/bot/v2/hook/26b09b67-8db6-4885-a3ab-b98dacb7d7ed";
+const RECEIVER_EMAIL = "18562703379@163.com";
+
 const searchInput = document.getElementById("searchInput");
 const categoryTabs = document.getElementById("categoryTabs");
 const toolGrid = document.getElementById("toolGrid");
 const resultMeta = document.getElementById("resultMeta");
+const themeToggle = document.getElementById("themeToggle");
+const ticketForm = document.getElementById("ticketForm");
+const ticketStatus = document.getElementById("ticketStatus");
+const emailFallback = document.getElementById("emailFallback");
 
 function getCategories() {
   const set = new Set(tools.map((t) => t.category));
@@ -132,6 +94,105 @@ function renderCards() {
     .join("");
 }
 
+function applyTheme(theme) {
+  if (theme === "light") {
+    document.body.classList.add("light");
+    themeToggle.textContent = "切换深色";
+  } else {
+    document.body.classList.remove("light");
+    themeToggle.textContent = "切换浅色";
+  }
+  localStorage.setItem("site-theme", theme);
+}
+
+function initTheme() {
+  const saved = localStorage.getItem("site-theme") || "dark";
+  applyTheme(saved);
+  themeToggle.addEventListener("click", () => {
+    const next = document.body.classList.contains("light") ? "dark" : "light";
+    applyTheme(next);
+  });
+}
+
+function buildMailtoLink(formData) {
+  const subject = `【企鹅AI基地工单】${formData.title}`;
+  const body = [
+    `称呼：${formData.name}`,
+    `联系方式：${formData.contact}`,
+    "",
+    "需求内容：",
+    formData.content
+  ].join("\n");
+  return `mailto:${RECEIVER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+async function submitTicketToFeishu(formData) {
+  if (!FEISHU_WEBHOOK) return false;
+  const text = [
+    "企鹅AI基地收到新工单：",
+    `称呼：${formData.name}`,
+    `联系方式：${formData.contact}`,
+    `标题：${formData.title}`,
+    `内容：${formData.content}`
+  ].join("\n");
+
+  const response = await fetch(FEISHU_WEBHOOK, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      msg_type: "text",
+      content: { text }
+    })
+  });
+  return response.ok;
+}
+
+function initTicketForm() {
+  if (RECEIVER_EMAIL) {
+    emailFallback.href = `mailto:${RECEIVER_EMAIL}`;
+  } else {
+    emailFallback.textContent = "邮件提交（请先配置邮箱）";
+  }
+
+  ticketForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = {
+      name: document.getElementById("ticketName").value.trim(),
+      contact: document.getElementById("ticketContact").value.trim(),
+      title: document.getElementById("ticketTitle").value.trim(),
+      content: document.getElementById("ticketContent").value.trim()
+    };
+
+    if (!formData.name || !formData.contact || !formData.title || !formData.content) {
+      ticketStatus.textContent = "请把信息填写完整。";
+      return;
+    }
+
+    ticketStatus.textContent = "正在提交...";
+    try {
+      const ok = await submitTicketToFeishu(formData);
+      if (ok) {
+        ticketStatus.textContent = "提交成功，已发送到飞书机器人。";
+        ticketForm.reset();
+        return;
+      }
+      if (RECEIVER_EMAIL) {
+        window.location.href = buildMailtoLink(formData);
+        ticketStatus.textContent = "飞书未配置，已切换到邮件发送。";
+      } else {
+        ticketStatus.textContent = "未配置飞书和邮箱，请先在 script.js 里配置。";
+      }
+    } catch (error) {
+      if (RECEIVER_EMAIL) {
+        window.location.href = buildMailtoLink(formData);
+        ticketStatus.textContent = "飞书发送失败，已切换到邮件发送。";
+      } else {
+        ticketStatus.textContent = "提交失败：请检查飞书 Webhook 或邮箱配置。";
+      }
+    }
+  });
+}
+
 searchInput.addEventListener("input", (e) => {
   state.keyword = e.target.value;
   renderCards();
@@ -146,5 +207,7 @@ categoryTabs.addEventListener("click", (e) => {
 });
 
 document.getElementById("year").textContent = new Date().getFullYear();
+initTheme();
+initTicketForm();
 renderTabs();
 renderCards();
