@@ -33,7 +33,7 @@ const state = {
   category: "全部"
 };
 
-const TICKET_API_URL = "";
+const TICKET_API_URL = "https://penguin-ai-ticket.xuhaoliebiao.workers.dev";
 const RECEIVER_EMAIL = "18562703379@163.com";
 
 const searchInput = document.getElementById("searchInput");
