@@ -235,16 +235,37 @@ h2 {
 
 .knowledge-embed {
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
   background: var(--surface);
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
 }
 
 .knowledge-embed iframe {
   width: 100%;
-  min-height: 640px;
+  min-height: 680px;
   border: 0;
   background: #fff;
+  transition: all 0.3s ease;
+}
+
+/* 悬停效果 */
+.knowledge-embed:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  border-color: var(--brand);
+  transform: translateY(-2px);
+}
+
+/* 浅色模式下的优化 */
+body.light .knowledge-embed iframe {
+  background: #f9fafc;
+}
+
+@media (max-width: 640px) {
+  .knowledge-embed iframe {
+    min-height: 480px;
+  }
 }
 
 .simple-list {
