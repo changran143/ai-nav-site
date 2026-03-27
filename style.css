@@ -229,44 +229,6 @@ h2 {
   flex-wrap: wrap;
 }
 
-.knowledge-actions {
-  margin: 8px 0 10px;
-}
-
-.knowledge-embed {
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  overflow: hidden;
-  background: var(--surface);
-  box-shadow: var(--shadow);
-  transition: all 0.3s ease;
-}
-
-.knowledge-embed iframe {
-  width: 100%;
-  min-height: 680px;
-  border: 0;
-  background: #fff;
-  transition: all 0.3s ease;
-}
-
-/* 悬停效果 */
-.knowledge-embed:hover {
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-  border-color: var(--brand);
-  transform: translateY(-2px);
-}
-
-/* 浅色模式下的优化 */
-body.light .knowledge-embed iframe {
-  background: #f9fafc;
-}
-
-@media (max-width: 640px) {
-  .knowledge-embed iframe {
-    min-height: 480px;
-  }
-}
 
 .simple-list {
   margin: 8px 0 0 18px;
@@ -276,6 +238,58 @@ body.light .knowledge-embed iframe {
 
 .simple-list a {
   color: var(--brand);
+}
+
+/* 知识库列表样式 */
+.knowledge-list {
+  margin: 12px 0 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.knowledge-list li {
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  transition: all 0.2s ease;
+}
+
+.knowledge-list li:hover {
+  border-color: var(--brand);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.knowledge-list a {
+  display: block;
+  padding: 16px 18px;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.list-title {
+  display: block;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--brand);
+  margin-bottom: 4px;
+}
+
+.list-subtitle {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* 悬停效果 */
+.knowledge-list a:hover .list-title {
+  color: var(--brand-2);
+}
+
+/* 浅色模式优化 */
+body.light .knowledge-list li {
+  background: var(--surface-2);
 }
 
 .ticket-form {
@@ -331,10 +345,6 @@ body.light .knowledge-embed iframe {
 @media (max-width: 640px) {
   .hero h1 {
     font-size: 25px;
-  }
-
-  .knowledge-embed iframe {
-    min-height: 520px;
   }
 
   .tool-grid {
