@@ -229,6 +229,24 @@ h2 {
   flex-wrap: wrap;
 }
 
+.knowledge-actions {
+  margin: 8px 0 10px;
+}
+
+.knowledge-embed {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.knowledge-embed iframe {
+  width: 100%;
+  min-height: 640px;
+  border: 0;
+  background: #fff;
+}
+
 .simple-list {
   margin: 8px 0 0 18px;
   color: var(--muted);
@@ -292,6 +310,10 @@ h2 {
 @media (max-width: 640px) {
   .hero h1 {
     font-size: 25px;
+  }
+
+  .knowledge-embed iframe {
+    min-height: 520px;
   }
 
   .tool-grid {
