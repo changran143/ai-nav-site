@@ -3,104 +3,580 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>企鹅AI基地</title>
+  <meta name="description" content="企鹅AI基地 - 一站式 AI 工具导航、学习资源与需求对接平台。发现最新 AI 工具，系统学习 AI 技能。" />
+  <meta name="keywords" content="AI工具,AI导航,ChatGPT,Midjourney,AI学习,AI教程,人工智能" />
+  <title>企鹅AI基地 - 一站式 AI 资源服务平台</title>
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <header class="topbar container">
-    <div class="brand-wrap">
-      <div class="brand">企鹅AI基地</div>
-      <div class="tip">你的 AI 导航与学习门户</div>
+
+<!-- ==================== 顶部导航 ==================== -->
+<header class="header">
+  <div class="header-inner container">
+    <a href="#" class="logo" data-nav="home">
+      <span class="logo-icon">🐧</span>
+      <span class="logo-text">企鹅AI基地</span>
+    </a>
+    <nav id="mainNav" class="main-nav">
+      <a href="#" class="nav-link active" data-nav="home">首页</a>
+      <a href="#" class="nav-link" data-nav="tools">AI工具库</a>
+      <a href="#" class="nav-link" data-nav="learn">学习资源</a>
+      <a href="#" class="nav-link" data-nav="market">需求市场</a>
+      <a href="#" class="nav-link" data-nav="premium">会员专区</a>
+      <a href="#" class="nav-link" data-nav="user">用户中心</a>
+      <a href="#" class="nav-link" data-nav="admin">后台管理</a>
+      <a href="#" class="nav-link" data-nav="submit">提交工具</a>
+      <a href="#" class="nav-link" data-nav="about">关于我们</a>
+    </nav>
+    <div class="header-actions">
+      <button id="themeToggle" class="icon-btn" title="切换主题">☀️</button>
+      <button id="loginBtn" class="btn-outline btn-sm" data-open-auth="login">登录</button>
+      <button id="registerBtn" class="btn-primary-sm" data-open-auth="register">注册</button>
     </div>
-    <div class="top-actions">
-      <button id="themeToggle" class="theme-toggle" type="button">切换浅色</button>
+    <button id="mobileMenuToggle" class="mobile-menu-btn">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main class="main-content">
+
+<!-- ==================== 首页 ==================== -->
+<div class="page-section active" data-page="home">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
     </div>
-  </header>
-
-  <nav class="main-nav container">
-    <a href="#home">首页</a>
-    <a href="#tools">AI工具合集</a>
-    <a href="#community">AI交流社区</a>
-    <a href="#knowledge">AI知识库</a>
-    <a href="#learning">AI学习资源</a>
-    <a href="#ticket">工单</a>
-    <a href="#about">关于我们</a>
-  </nav>
-
-  <main class="container">
-    <section id="home" class="hero section-card">
-      <h1>发现、学习、交流，一站式搞定 AI</h1>
-      <p>从工具导航到学习资源，再到需求工单，企鹅AI基地帮你持续成长。</p>
-    </section>
-
-    <section id="tools" class="section-card">
-      <h2>AI工具合集</h2>
-      <div class="controls">
-        <input id="searchInput" type="text" placeholder="输入工具名或描述关键词..." />
-        <div id="categoryTabs" class="tabs"></div>
-      </div>
-      <div id="resultMeta" class="result-meta"></div>
-      <div id="toolGrid" class="tool-grid"></div>
-    </section>
-
-    <section id="community" class="section-card">
-      <h2>AI交流社区</h2>
-      <p class="section-desc">欢迎加入你的飞书群、微信群、QQ群，把链接改到下方按钮即可。</p>
-      <div class="quick-links">
-        <a class="btn-link" href="https://www.feishu.cn/" target="_blank" rel="noopener noreferrer">飞书社区</a>
-        <a class="btn-link" href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub 讨论区</a>
-      </div>
-    </section>
-
-    <section id="knowledge" class="section-card">
-      <h2>AI知识库</h2>
-      <p class="section-desc">整理梯子教程、AI使用技巧等知识库文档</p>
-      <ul class="knowledge-list">
-        <li>
-          <a href="https://www.notion.so/01-Clash-Clash-v-V2rayn-330074b57b428031bd81cde10966a478?source=copy_link" target="_blank" rel="noopener noreferrer">
-            <span class="list-title">梯子使用教程01（Clash/Clash v/V2rayn）</span>
-            <span class="list-subtitle">点击查看详细教程</span>
-          </a>
-        </li>
-      </ul>
-    </section>
-
-    <section id="learning" class="section-card">
-      <h2>AI学习资源</h2>
-      <p class="section-desc">整理课程、教程、案例站，建议每周更新一次。</p>
-      <ul class="simple-list">
-        <li><a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">视频学习平台（示例）</a></li>
-        <li><a href="https://github.com/trending" target="_blank" rel="noopener noreferrer">开源项目趋势</a></li>
-        <li><a href="https://www.bilibili.com/" target="_blank" rel="noopener noreferrer">B站 AI 学习内容</a></li>
-      </ul>
-    </section>
-
-    <section id="ticket" class="section-card">
-      <h2>工单</h2>
-      <p class="section-desc">所有人都可以给你提需求。提交后会尝试发到飞书机器人；也支持直接发邮件给你。</p>
-      <form id="ticketForm" class="ticket-form">
-        <input id="ticketName" name="name" type="text" placeholder="你的称呼" required />
-        <input id="ticketContact" name="contact" type="text" placeholder="联系方式（邮箱/微信）" required />
-        <input id="ticketTitle" name="title" type="text" placeholder="需求标题" required />
-        <textarea id="ticketContent" name="content" rows="5" placeholder="请描述你的需求..." required></textarea>
-        <div class="ticket-actions">
-          <button type="submit" class="btn-primary">提交工单</button>
-          <a id="emailFallback" class="btn-link" href="#">邮件提交（兜底）</a>
+    <div class="container hero-content">
+      <h1 class="hero-title animate-on-scroll">
+        发现<span class="gradient-text">最好的 AI 工具</span>，<br/>提升你的工作效率
+      </h1>
+      <p class="hero-subtitle animate-on-scroll">
+        从工具导航到学习资源，再到需求对接 —— 企鹅AI基地帮你一站式搞定 AI
+      </p>
+      <div class="hero-search animate-on-scroll">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" placeholder="搜索 AI 工具、分类、功能..." />
+          <button class="search-btn" data-goto-tools>搜索</button>
         </div>
-        <p id="ticketStatus" class="ticket-status"></p>
+        <div class="search-hints">
+          热门搜索：
+          <button class="hint-tag" onclick="document.querySelectorAll('.search-input').forEach(i=>i.value='对话');document.querySelectorAll('.search-input').forEach(i=>i.dispatchEvent(new Event('input')))">AI 对话</button>
+          <button class="hint-tag" onclick="document.querySelectorAll('.search-input').forEach(i=>i.value='绘画');document.querySelectorAll('.search-input').forEach(i=>i.dispatchEvent(new Event('input')))">AI 绘画</button>
+          <button class="hint-tag" onclick="document.querySelectorAll('.search-input').forEach(i=>i.value='视频');document.querySelectorAll('.search-input').forEach(i=>i.dispatchEvent(new Event('input')))">AI 视频</button>
+          <button class="hint-tag" onclick="document.querySelectorAll('.search-input').forEach(i=>i.value='编程');document.querySelectorAll('.search-input').forEach(i=>i.dispatchEvent(new Event('input')))">AI 编程</button>
+        </div>
+      </div>
+
+      <!-- 统计数字 -->
+      <div class="hero-stats animate-on-scroll">
+        <div class="stat-item">
+          <div class="stat-number">0</div>
+          <div class="stat-label">收录工具</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-number">0</div>
+          <div class="stat-label">工具分类</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-number">0</div>
+          <div class="stat-label">用户评价</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 精选推荐 -->
+  <section class="section container animate-on-scroll">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">🔥 精选推荐</h2>
+        <p class="section-subtitle">编辑精选，值得关注的优质 AI 工具</p>
+      </div>
+      <button class="btn-outline" data-goto-tools>查看全部 →</button>
+    </div>
+    <div id="featuredGrid" class="tool-grid"></div>
+  </section>
+
+  <!-- 分类速览 -->
+  <section class="section container animate-on-scroll">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">📂 分类速览</h2>
+        <p class="section-subtitle">按场景快速找到你需要的 AI 工具</p>
+      </div>
+    </div>
+    <div class="category-showcase">
+      <div class="cat-card" onclick="document.querySelectorAll('.search-input').forEach(i=>{i.value='';i.dispatchEvent(new Event('input'))});document.querySelector('[data-nav=tools]').click()">
+        <div class="cat-icon">💬</div>
+        <div class="cat-name">AI 对话</div>
+        <div class="cat-count">8 个工具</div>
+      </div>
+      <div class="cat-card" onclick="document.querySelectorAll('.search-input').forEach(i=>{i.value='';i.dispatchEvent(new Event('input'))});document.querySelector('[data-nav=tools]').click()">
+        <div class="cat-icon">🎨</div>
+        <div class="cat-name">AI 绘画</div>
+        <div class="cat-count">6 个工具</div>
+      </div>
+      <div class="cat-card" onclick="document.querySelectorAll('.search-input').forEach(i=>{i.value='';i.dispatchEvent(new Event('input'))});document.querySelector('[data-nav=tools]').click()">
+        <div class="cat-icon">🎬</div>
+        <div class="cat-name">AI 视频</div>
+        <div class="cat-count">5 个工具</div>
+      </div>
+      <div class="cat-card" onclick="document.querySelectorAll('.search-input').forEach(i=>{i.value='';i.dispatchEvent(new Event('input'))});document.querySelector('[data-nav=tools]').click()">
+        <div class="cat-icon">⌨️</div>
+        <div class="cat-name">AI 编程</div>
+        <div class="cat-count">3 个工具</div>
+      </div>
+      <div class="cat-card" onclick="document.querySelectorAll('.search-input').forEach(i=>{i.value='';i.dispatchEvent(new Event('input'))});document.querySelector('[data-nav=tools]').click()">
+        <div class="cat-icon">🔗</div>
+        <div class="cat-name">AI 自动化</div>
+        <div class="cat-count">3 个工具</div>
+      </div>
+      <div class="cat-card" onclick="document.querySelectorAll('.search-input').forEach(i=>{i.value='';i.dispatchEvent(new Event('input'))});document.querySelector('[data-nav=tools]').click()">
+        <div class="cat-icon">🎵</div>
+        <div class="cat-name">AI 音频</div>
+        <div class="cat-count">2 个工具</div>
+      </div>
+      <div class="cat-card" onclick="document.querySelectorAll('.search-input').forEach(i=>{i.value='';i.dispatchEvent(new Event('input'))});document.querySelector('[data-nav=tools]').click()">
+        <div class="cat-icon">✏️</div>
+        <div class="cat-name">AI 写作</div>
+        <div class="cat-count">2 个工具</div>
+      </div>
+      <div class="cat-card" onclick="document.querySelectorAll('.search-input').forEach(i=>{i.value='';i.dispatchEvent(new Event('input'))});document.querySelector('[data-nav=tools]').click()">
+        <div class="cat-icon">📊</div>
+        <div class="cat-name">数据分析</div>
+        <div class="cat-count">1 个工具</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 会员推广 Banner -->
+  <section class="section container animate-on-scroll">
+    <div class="premium-banner">
+      <div class="premium-banner-content">
+        <span class="premium-badge">✨ 会员专属</span>
+        <h2>解锁全部 AI 工具评测与独家内容</h2>
+        <p>深度评测 · 工具对比 · 实战课程 · 去广告 · 优先客服</p>
+        <div class="premium-price">
+          <span class="price-original">¥49/月</span>
+          <span class="price-current">¥19<small>/月</small></span>
+          <span class="price-save">限时优惠</span>
+        </div>
+        <button class="btn-premium" data-nav="premium">立即加入会员 →</button>
+      </div>
+      <div class="premium-banner-deco">
+        <div class="deco-circle"></div>
+        <div class="deco-circle-2"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 邮件订阅 -->
+  <section class="section container animate-on-scroll">
+    <div class="subscribe-section">
+      <div class="subscribe-content">
+        <h2>📬 每周 AI 工具简报</h2>
+        <p>精选最新 AI 工具、实用技巧和行业动态，直达你的邮箱</p>
+      </div>
+      <form id="subscribeForm" class="subscribe-form">
+        <input id="subEmail" type="email" placeholder="输入你的邮箱地址..." required />
+        <button type="submit" class="btn-subscribe">免费订阅</button>
       </form>
-    </section>
+      <p id="subStatus" class="sub-status"></p>
+    </div>
+  </section>
 
-    <section id="about" class="section-card">
-      <h2>关于我们</h2>
-      <p class="section-desc">企鹅AI基地专注于 AI 工具导航、学习沉淀和需求协作。</p>
-    </section>
-  </main>
+</div>
 
-  <footer class="footer">
-    <p>© <span id="year"></span> 企鹅AI基地 · 仅供学习与分享</p>
-  </footer>
+<!-- ==================== AI 工具库 ==================== -->
+<div class="page-section" data-page="tools">
+  <section class="section container">
+    <div class="tools-page-header">
+      <h1 class="page-title">AI 工具库</h1>
+      <p class="page-subtitle">发现、搜索、收藏最好的 AI 工具</p>
+    </div>
 
-  <script src="./script.js"></script>
+    <div class="tools-controls">
+      <div class="search-box search-box-sm">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-input" placeholder="搜索工具名称、描述或分类..." />
+      </div>
+      <div class="tools-filters">
+        <div id="categoryTabs" class="cat-tabs"></div>
+        <div id="sortBtns" class="sort-btns"></div>
+      </div>
+    </div>
+
+    <div id="resultMeta" class="result-meta"></div>
+    <div id="toolGrid" class="tool-grid"></div>
+  </section>
+</div>
+
+<!-- ==================== 学习资源 ==================== -->
+<div class="page-section" data-page="learn">
+  <section class="section container">
+    <div class="tools-page-header">
+      <h1 class="page-title">📚 学习资源</h1>
+      <p class="page-subtitle">系统化的 AI 学习教程与实战课程</p>
+    </div>
+    <div id="learningGrid" class="learning-grid"></div>
+  </section>
+</div>
+
+<!-- ==================== 需求市场 ==================== -->
+<div class="page-section" data-page="market">
+  <section class="section container">
+    <div class="tools-page-header">
+      <h1 class="page-title">🏪 需求市场</h1>
+      <p class="page-subtitle">发布需求，对接专业 AI 服务</p>
+    </div>
+
+    <!-- 市场介绍 -->
+    <div class="market-intro">
+      <div class="market-flow">
+        <div class="flow-step">
+          <div class="flow-icon">📋</div>
+          <div class="flow-label">发布需求</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-icon">💰</div>
+          <div class="flow-label">支付定金</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-icon">🤝</div>
+          <div class="flow-label">服务方接单</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-icon">✅</div>
+          <div class="flow-label">确认交付</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 工单表单 -->
+    <div class="card-section">
+      <h2>📝 提交需求 / 工单</h2>
+      <p class="section-desc">描述你的需求，我们帮你对接合适的 AI 服务方。</p>
+      <form id="ticketForm" class="ticket-form">
+        <div class="form-row">
+          <input id="ticketName" name="name" type="text" placeholder="你的称呼 *" required />
+          <input id="ticketContact" name="contact" type="text" placeholder="联系方式（邮箱/微信）*" required />
+        </div>
+        <input id="ticketTitle" name="title" type="text" placeholder="需求标题 *" required />
+        <textarea id="ticketContent" name="content" rows="5" placeholder="请详细描述你的需求..." required></textarea>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary-lg">提交需求</button>
+          <a id="emailFallback" class="btn-outline" href="mailto:18562703379@163.com">📧 邮件提交</a>
+        </div>
+        <p id="ticketStatus" class="form-status"></p>
+      </form>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== 会员专区 ==================== -->
+<div class="page-section" data-page="premium">
+  <section class="section container">
+    <div class="tools-page-header">
+      <h1 class="page-title">✨ 会员专区</h1>
+      <p class="page-subtitle">解锁独家内容，加速你的 AI 进化之路</p>
+    </div>
+
+    <!-- 会员等级卡片 -->
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-card-header">
+          <h3>免费版</h3>
+          <div class="price-amount">¥0</div>
+        </div>
+        <ul class="price-features">
+          <li>✅ 浏览全部工具</li>
+          <li>✅ 基础搜索筛选</li>
+          <li>✅ 工具收藏 (最多 20)</li>
+          <li>❌ 独家评测报告</li>
+          <li>❌ 工具对比功能</li>
+          <li>❌ 去广告</li>
+        </ul>
+        <button class="btn-outline btn-full" data-premium="free" data-premium-action="current">当前方案</button>
+      </div>
+      <div class="price-card popular">
+        <div class="popular-badge">最受欢迎</div>
+        <div class="price-card-header">
+          <h3>月会员</h3>
+          <div class="price-amount">¥19<small>/月</small></div>
+        </div>
+        <ul class="price-features">
+          <li>✅ 全部免费版权益</li>
+          <li>✅ 独家深度评测</li>
+          <li>✅ 工具对比报告</li>
+          <li>✅ 去广告体验</li>
+          <li>✅ 优先客服支持</li>
+          <li>❌ 社群入口</li>
+        </ul>
+        <button class="btn-primary-lg btn-full" data-premium="month">立即开通</button>
+      </div>
+      <div class="price-card">
+        <div class="price-card-header">
+          <h3>年会员</h3>
+          <div class="price-amount">¥199<small>/年</small></div>
+          <div class="price-save-tag">省 ¥29</div>
+        </div>
+        <ul class="price-features">
+          <li>✅ 全部月会员权益</li>
+          <li>✅ 课程 8 折优惠</li>
+          <li>✅ 私密社群入口</li>
+          <li>✅ 每月 AI 趋势报告</li>
+          <li>✅ 线上交流活动</li>
+          <li>✅ 专属 1v1 咨询</li>
+        </ul>
+        <button class="btn-outline btn-full" data-premium="year">立即开通</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== 提交工具 ==================== -->
+<div class="page-section" data-page="submit">
+  <section class="section container">
+    <div class="tools-page-header">
+      <h1 class="page-title">🚀 提交工具收录</h1>
+      <p class="page-subtitle">让更多人发现你的 AI 工具</p>
+    </div>
+
+    <!-- 收录方案 -->
+    <div class="submit-plans">
+      <label class="plan-card">
+        <input type="radio" name="submit-plan" value="free" checked />
+        <div class="plan-content">
+          <div class="plan-name">免费收录</div>
+          <div class="plan-price">¥0</div>
+          <div class="plan-desc">7-14 天审核</div>
+        </div>
+      </label>
+      <label class="plan-card highlight">
+        <input type="radio" name="submit-plan" value="fast" />
+        <div class="plan-content">
+          <div class="plan-name">快速收录</div>
+          <div class="plan-price">¥99</div>
+          <div class="plan-desc">3 天内审核</div>
+        </div>
+      </label>
+      <label class="plan-card">
+        <input type="radio" name="submit-plan" value="featured" />
+        <div class="plan-content">
+          <div class="plan-name">首页推荐</div>
+          <div class="plan-price">¥299<small>/周</small></div>
+          <div class="plan-desc">置顶展示 + 推荐标签</div>
+        </div>
+      </label>
+    </div>
+
+    <div class="card-section">
+      <form id="submitToolForm" class="ticket-form">
+        <div class="form-row">
+          <input id="stName" type="text" placeholder="工具名称 *" required />
+          <input id="stUrl" type="url" placeholder="官网链接 *" required />
+        </div>
+        <div class="form-row">
+          <select id="stCategory" required>
+            <option value="">选择分类 *</option>
+            <option>AI 对话</option>
+            <option>AI 绘画</option>
+            <option>AI 视频</option>
+            <option>AI 编程</option>
+            <option>AI 自动化</option>
+            <option>AI 音频</option>
+            <option>AI 写作</option>
+            <option>数据分析</option>
+            <option>其他</option>
+          </select>
+          <input id="stContact" type="text" placeholder="联系方式 *" required />
+        </div>
+        <div class="form-row">
+          <div>
+            <input id="stLogo" type="file" accept="image/*" required />
+            <div class="file-hint">请上传工具 Logo（建议 200KB 内）</div>
+          </div>
+          <div>
+            <input id="stScreenshots" type="file" accept="image/*" multiple />
+            <div class="file-hint">最多上传 3 张截图（用于审核展示）</div>
+          </div>
+        </div>
+        <textarea id="stDesc" rows="4" placeholder="工具简介（200 字以内）*" maxlength="200" required></textarea>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary-lg">提交审核</button>
+        </div>
+        <p id="submitToolStatus" class="form-status"></p>
+      </form>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== 用户中心 ==================== -->
+<div class="page-section" data-page="user">
+  <section class="section container">
+    <div class="tools-page-header">
+      <h1 class="page-title">👤 用户中心</h1>
+      <p class="page-subtitle">收藏、会员状态、订单与提交记录（演示版）</p>
+    </div>
+
+    <div class="card-section">
+      <h2>账号信息</h2>
+      <p id="userInfoText" class="section-desc">未登录</p>
+      <div class="form-actions">
+        <button class="btn-outline" id="loginQuickBtn" type="button" data-open-auth="login">登录</button>
+        <button class="btn-outline" id="logoutBtn" type="button" style="display:none;">退出登录</button>
+        <button class="btn-outline" id="togglePremiumDemoBtn" type="button">切换会员演示</button>
+      </div>
+    </div>
+
+    <div class="card-section">
+      <h2>我的收藏</h2>
+      <div id="favoritesGrid" class="tool-grid"></div>
+      <div id="favoritesEmpty" class="empty-state" style="display:none;">
+        <div class="empty-icon">❤️</div>
+        <p>还没有收藏工具。去 `AI 工具库` 点击 ❤️ 收藏吧。</p>
+      </div>
+    </div>
+
+    <div class="card-section">
+      <h2>我的订单（演示）</h2>
+      <div id="ordersList" class="section-desc"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== 后台管理（演示） ==================== -->
+<div class="page-section" data-page="admin">
+  <section class="section container">
+    <div class="tools-page-header">
+      <h1 class="page-title">🛠️ 后台管理</h1>
+      <p class="page-subtitle">工具审核队列（演示版，无真实支付/鉴权）</p>
+    </div>
+
+    <div class="card-section">
+      <h2>管理员说明</h2>
+      <p class="section-desc">演示规则：登录用户名为 <b>admin</b> 时可查看审核队列并执行通过/拒绝。</p>
+    </div>
+
+    <div class="card-section">
+      <h2>工具提交审核</h2>
+      <div id="submissionsList" class="section-desc">加载中...</div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== 关于我们 ==================== -->
+<div class="page-section" data-page="about">
+  <section class="section container">
+    <div class="tools-page-header">
+      <h1 class="page-title">关于企鹅AI基地</h1>
+      <p class="page-subtitle">你的一站式 AI 资源服务平台</p>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="about-icon">🎯</div>
+        <h3>我们的使命</h3>
+        <p>帮助每一个人发现、学习和应用最好的 AI 工具，让 AI 技术真正服务于每个人的工作和生活。</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">🔍</div>
+        <h3>AI 工具发现</h3>
+        <p>我们持续追踪全球最新的 AI 工具，提供详细的介绍、评测和对比，帮你做出明智的选择。</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">📚</div>
+        <h3>系统化学习</h3>
+        <p>从入门到精通，提供结构化的 AI 学习路径，包括教程、课程、案例和实战项目。</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">🤝</div>
+        <h3>需求对接</h3>
+        <p>连接 AI 需求方和服务方，打造高效的 AI 服务交易平台。</p>
+      </div>
+    </div>
+
+    <!-- 社群链接 -->
+    <div class="card-section">
+      <h2>🌐 加入我们的社群</h2>
+      <p class="section-desc">与志同道合的 AI 爱好者交流学习</p>
+      <div class="community-links">
+        <a class="community-card" href="https://www.feishu.cn/" target="_blank" rel="noopener noreferrer">
+          <span class="comm-icon">📱</span>
+          <span class="comm-name">飞书群</span>
+        </a>
+        <a class="community-card" href="https://github.com/" target="_blank" rel="noopener noreferrer">
+          <span class="comm-icon">🐙</span>
+          <span class="comm-name">GitHub</span>
+        </a>
+        <a class="community-card" href="#" target="_blank" rel="noopener noreferrer">
+          <span class="comm-icon">💬</span>
+          <span class="comm-name">微信群</span>
+        </a>
+        <a class="community-card" href="#" target="_blank" rel="noopener noreferrer">
+          <span class="comm-icon">🎮</span>
+          <span class="comm-name">QQ群</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<!-- ==================== 页脚 ==================== -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="logo-icon">🐧</span>
+          <span class="logo-text">企鹅AI基地</span>
+        </div>
+        <p class="footer-desc">一站式 AI 资源服务平台<br/>发现、学习、交流，持续成长</p>
+      </div>
+      <div class="footer-links">
+        <h4>快速导航</h4>
+        <a href="#" data-nav="tools">AI 工具库</a>
+        <a href="#" data-nav="learn">学习资源</a>
+        <a href="#" data-nav="market">需求市场</a>
+        <a href="#" data-nav="submit">提交工具</a>
+        <a href="#" data-nav="user">用户中心</a>
+      </div>
+      <div class="footer-links">
+        <h4>关于</h4>
+        <a href="#" data-nav="about">关于我们</a>
+        <a href="#" data-nav="premium">会员服务</a>
+        <a href="mailto:18562703379@163.com">联系我们</a>
+      </div>
+      <div class="footer-links">
+        <h4>友情链接</h4>
+        <a href="https://futuretools.io" target="_blank" rel="noopener noreferrer">FutureTools</a>
+        <a href="https://theresanaiforthat.com" target="_blank" rel="noopener noreferrer">There's An AI</a>
+        <a href="https://ai-toolbox.me" target="_blank" rel="noopener noreferrer">AI Toolbox</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span id="year"></span> 企鹅AI基地 · 仅供学习与分享</p>
+    </div>
+  </div>
+</footer>
+
+<!-- 工具详情弹窗容器 -->
+<div id="detailModal" class="modal"></div>
+<div id="authModal" class="modal"></div>
+
+<script src="./script.js"></script>
 </body>
 </html>
