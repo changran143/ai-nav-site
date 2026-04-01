@@ -930,6 +930,18 @@ body.light .premium-banner { background: linear-gradient(135deg, #4338ca, #6366f
   color: var(--muted);
   background: var(--surface-2);
 }
+.wechat-qrcode-wrap {
+  margin: 16px 0 20px;
+}
+.wechat-qrcode-wrap img {
+  display: block;
+  width: 220px;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: #fff;
+}
 
 /* ===== 知识库布局 ===== */
 .knowledge-shell {
