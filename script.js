@@ -142,22 +142,12 @@ const tools = [
     affiliateLink:"", rating:4.4, reviewCount:2900, isFeatured:false },
 ];
 
-/* ========== 学习资源数据 ========== */
-const learningResources = [
-  { title:"AI 绘画从入门到精通", type:"教程", tag:"AI 绘画", desc:"系统学习 Midjourney / Stable Diffusion 提示词技巧与工作流", isFree:true },
-  { title:"ChatGPT 高效使用指南", type:"教程", tag:"AI 对话", desc:"掌握提示词工程、场景化应用和高级技巧", isFree:true },
-  { title:"AI 视频制作实战课", type:"课程", tag:"AI 视频", desc:"从 Runway 到 Pika，学习 AI 视频生成全流程", isFree:false },
-  { title:"AI 编程效率提升 10 倍", type:"教程", tag:"AI 编程", desc:"使用 Cursor + Copilot 组合提升开发效率", isFree:true },
-  { title:"AI 自动化工作流搭建", type:"课程", tag:"AI 自动化", desc:"n8n + AI 打造个人效率系统", isFree:false },
-  { title:"梯子使用教程（Clash/V2Ray）", type:"教程", tag:"基础", desc:"科学上网工具配置详细图文教程", isFree:true, link:"https://www.notion.so/01-Clash-Clash-v-V2rayn-330074b57b428031bd81cde10966a478?source=copy_link" },
-];
-
 /* ========== 全局状态 ========== */
 const state = {
   keyword: "",
   category: "全部",
   sort: "featured", // featured | newest | rating | reviews
-  currentPage: "home", // home | tools | learn | market | premium | submit | about
+  currentPage: "home", // home | tools | knowledge | market | premium | submit | about | user | admin
   favorites: JSON.parse(localStorage.getItem("penguin-favorites") || "[]"),
   detailTool: null,
 
@@ -401,30 +391,164 @@ function renderFeaturedTools() {
   el.innerHTML = featured.map(renderToolCard).join('');
 }
 
-/* ========== 渲染：学习资源 ========== */
-function renderLearningCards() {
-  const el = $("#learningGrid");
-  if (!el) return;
-  const canSeePremium = hasPremium();
-  el.innerHTML = learningResources.map(r => `
-    <div class="learn-card">
-      <div class="learn-card-header">
-        <span class="learn-type ${r.type === '课程' ? 'type-course' : 'type-tutorial'}">${r.type}</span>
-        <span class="learn-tag">${r.tag}</span>
-        ${!r.isFree ? '<span class="learn-premium">会员</span>' : ''}
-      </div>
-      <h3 class="learn-title">${r.title}</h3>
-      <p class="learn-desc">${r.desc}</p>
-      <div class="learn-footer">
-        ${!r.isFree && !canSeePremium
-          ? `<span class="btn-learn coming">需会员查看</span>`
-          : r.link
-            ? `<a href="${r.link}" target="_blank" rel="noopener noreferrer" class="btn-learn">开始学习 →</a>`
-            : `<span class="btn-learn coming">${r.isFree ? '即将上线' : '会员专享'}</span>`
-        }
-      </div>
-    </div>
-  `).join('');
+/* ========== 知识库（静态数据 + Markdown；无评论） ========== */
+const KNOWLEDGE_LS_COLLAPSE = "knowledge-sidebar-collapsed";
+const KNOWLEDGE_LS_CHAPTER = "knowledge-chapter-open-";
+
+function getKnowledgeChapters() {
+  return window.KNOWLEDGE_CHAPTERS || [];
+}
+
+function flattenKnowledgeSections() {
+  const list = [];
+  getKnowledgeChapters().forEach(ch => {
+    ch.sections.forEach(sec => {
+      list.push({ ...sec, chapterId: ch.id, chapterTitle: ch.title });
+    });
+  });
+  return list;
+}
+
+function findSectionBySlug(slug) {
+  return flattenKnowledgeSections().find(s => s.slug === slug);
+}
+
+function getPrevNext(slug) {
+  const list = flattenKnowledgeSections();
+  const i = list.findIndex(s => s.slug === slug);
+  return {
+    prev: i > 0 ? list[i - 1] : null,
+    next: i >= 0 && i < list.length - 1 ? list[i + 1] : null,
+  };
+}
+
+function renderMarkdownToHtml(md) {
+  if (typeof marked === "undefined") return `<p>Markdown 组件未加载，请检查网络后刷新。</p>`;
+  try {
+    const raw = marked.parse(md || "", { async: false });
+    return typeof raw === "string" ? raw : String(raw);
+  } catch (e) {
+    return `<p>内容渲染失败。</p>`;
+  }
+}
+
+function highlightKnowledgeCode() {
+  const body = $("#knowledgeArticleBody");
+  if (!body || !window.Prism) return;
+  body.querySelectorAll("pre code").forEach(el => {
+    try {
+      Prism.highlightElement(el);
+    } catch (_) {}
+  });
+}
+
+function renderKnowledgeArticle(slug) {
+  const sec = findSectionBySlug(slug);
+  const titleEl = $("#knowledgeArticleTitle");
+  const excerptEl = $("#knowledgeArticleExcerpt");
+  const breadcrumbEl = $("#knowledgeBreadcrumb");
+  const bodyEl = $("#knowledgeArticleBody");
+  const prevNextEl = $("#knowledgePrevNext");
+  if (!bodyEl) return;
+  if (!sec) {
+    if (titleEl) titleEl.textContent = "未找到文章";
+    bodyEl.innerHTML = "<p class=\"section-desc\">链接无效或文章未发布。</p>";
+    return;
+  }
+  if (titleEl) titleEl.textContent = sec.title;
+  if (excerptEl) excerptEl.textContent = sec.excerpt || "";
+  if (breadcrumbEl) breadcrumbEl.textContent = `${sec.chapterTitle} · ${sec.title}`;
+
+  bodyEl.innerHTML = renderMarkdownToHtml(sec.markdown || "");
+  highlightKnowledgeCode();
+
+  const { prev, next } = getPrevNext(slug);
+  if (prevNextEl) {
+    prevNextEl.innerHTML = `
+      <div class="knowledge-prevnext-inner">
+        ${prev
+          ? `<button type="button" class="btn-outline knowledge-nav-btn" data-knowledge-slug="${prev.slug}">← 上一篇：${escapeHtml(prev.title)}</button>`
+          : "<span class=\"knowledge-nav-placeholder\"></span>"}
+        ${next
+          ? `<button type="button" class="btn-outline knowledge-nav-btn" data-knowledge-slug="${next.slug}">下一篇：${escapeHtml(next.title)} →</button>`
+          : "<span class=\"knowledge-nav-placeholder\"></span>"}
+      </div>`;
+  }
+  $$(".knowledge-tree-link").forEach(a => {
+    a.classList.toggle("is-active", a.dataset.knowledgeSlug === slug);
+  });
+
+  const h = `#knowledge/${slug}`;
+  if (location.hash !== h) history.replaceState(null, "", h);
+  updateKnowledgeReadingProgress();
+}
+
+function renderKnowledgeTree() {
+  const nav = $("#knowledgeTree");
+  if (!nav) return;
+  const chs = getKnowledgeChapters();
+  nav.innerHTML = chs.map(ch => {
+    const open = localStorage.getItem(KNOWLEDGE_LS_CHAPTER + ch.id) !== "0";
+    return `
+      <div class="knowledge-chapter" data-chapter-id="${ch.id}">
+        <button type="button" class="knowledge-chapter-toggle" data-chapter-toggle="${ch.id}" aria-expanded="${open}">
+          <span class="knowledge-chapter-icon">${open ? "▼" : "▶"}</span>
+          <span class="knowledge-chapter-name">${escapeHtml(ch.title)}</span>
+        </button>
+        <div class="knowledge-section-list" ${open ? "" : "hidden"}>
+          ${ch.sections.map(s => `
+            <a href="#knowledge/${s.slug}" class="knowledge-tree-link" data-knowledge-slug="${s.slug}" data-nav-ignore="1">${escapeHtml(s.title)}</a>
+          `).join("")}
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function getDefaultKnowledgeSlug() {
+  const list = flattenKnowledgeSections();
+  return list[0]?.slug || "";
+}
+
+function initKnowledgePage() {
+  renderKnowledgeTree();
+  applyKnowledgeSidebarCollapsed();
+  bindKnowledgeScrollProgress();
+  const slug = parseKnowledgeHash().slug || getDefaultKnowledgeSlug();
+  if (slug) renderKnowledgeArticle(slug);
+}
+
+function parseKnowledgeHash() {
+  const h = (location.hash || "").replace(/^#/, "");
+  if (h.startsWith("knowledge/")) {
+    const slug = h.slice("knowledge/".length).split("/")[0];
+    return { slug: slug || null };
+  }
+  return { slug: null };
+}
+
+function applyKnowledgeSidebarCollapsed() {
+  const collapsed = localStorage.getItem(KNOWLEDGE_LS_COLLAPSE) === "1";
+  const shell = document.querySelector(".knowledge-shell");
+  const btn = $("#knowledgeCollapseBtn");
+  if (shell) shell.classList.toggle("knowledge-shell--collapsed", collapsed);
+  if (btn) btn.textContent = collapsed ? "⟩" : "⟨";
+}
+
+function updateKnowledgeReadingProgress() {
+  const main = document.querySelector(".knowledge-main");
+  const bar = $("#knowledgeReadingBar");
+  if (!main || !bar) return;
+  const max = main.scrollHeight - main.clientHeight;
+  const p = max <= 0 ? 100 : Math.min(100, Math.round((main.scrollTop / max) * 100));
+  bar.style.width = `${p}%`;
+  bar.setAttribute("aria-valuenow", String(p));
+}
+
+function bindKnowledgeScrollProgress() {
+  const main = document.querySelector(".knowledge-main");
+  if (!main || main.dataset.knowledgeScrollBound) return;
+  main.dataset.knowledgeScrollBound = "1";
+  main.addEventListener("scroll", () => updateKnowledgeReadingProgress(), { passive: true });
 }
 
 /* ========== 渲染：首页统计数字 ========== */
@@ -535,7 +659,7 @@ function showDetail(id) {
             <h4 class="review-form-title">发表评论</h4>
             ${canComment
               ? ""
-              : `<p class="review-login-hint">登录后可发表评论。演示：点击右上角“登录”，输入用户名 <b>admin</b> 或任意名字即可。</p>`
+              : `<p class="review-login-hint">登录后可发表评论。演示：使用邮箱/手机号注册；显示名或账号为 <b>admin</b> 可获得后台权限。</p>`
             }
             <div class="review-form-row">
               <label class="review-label" for="reviewRating">评分</label>
@@ -611,7 +735,8 @@ function renderUserPage() {
   if (!info) return;
 
   if (state.user) {
-    info.textContent = `已登录：${state.user.name}（${state.user.role === "ADMIN" ? "管理员" : "用户"}）`;
+    const extra = [state.user.email, state.user.phone].filter(Boolean).join(" · ");
+    info.textContent = `已登录：${state.user.name}（${state.user.role === "ADMIN" ? "管理员" : "用户"}）${extra ? " · " + extra : ""}`;
     if (logoutBtn) logoutBtn.style.display = "";
   } else {
     info.textContent = "未登录";
@@ -691,6 +816,19 @@ function renderAdminPage() {
   }).join("");
 }
 
+function validatePasswordRule(pw) {
+  if (!pw || String(pw).length < 8) return "密码至少 8 位";
+  if (!/[A-Za-z]/.test(pw) || !/\d/.test(pw)) return "密码需同时包含字母与数字";
+  return "";
+}
+
+function updateAdminNavVisibility() {
+  state.user = JSON.parse(localStorage.getItem(AUTH_USER_KEY) || "null");
+  const el = $("#navAdminLink");
+  if (!el) return;
+  el.hidden = !isAdmin();
+}
+
 function openAuth(mode) {
   const modal = $("#authModal");
   if (!modal) return;
@@ -698,29 +836,58 @@ function openAuth(mode) {
   const realMode = mode === "register" ? "register" : "login";
   modal.innerHTML = `
     <div class="modal-overlay" data-close-auth>
-      <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-content auth-modal-content" onclick="event.stopPropagation()">
         <button class="modal-close" data-close-auth>&times;</button>
         <div class="detail-header">
           <div class="detail-logo">🔐</div>
           <div>
-            <h2 class="detail-name">${realMode === "register" ? "创建账号（演示）" : "登录（演示）"}</h2>
-            <div class="section-desc">输入用户名即可完成演示登录。</div>
+            <h2 class="detail-name">${realMode === "register" ? "注册账号" : "登录"}</h2>
+            <div class="section-desc">静态站演示：无需 X(Twitter) 验证；对接后端后可使用邮箱/短信验证码。</div>
           </div>
         </div>
 
-        <div class="detail-section">
-          <h3>用户名</h3>
-          <input id="authUserName" type="text" placeholder="例如：admin" required />
-          <h3 style="margin-top:14px">邮箱（可选）</h3>
-          <input id="authEmail" type="email" placeholder="you@example.com" />
-          <div class="section-desc" style="margin-top:10px">
-            演示规则：用户名为 <b>admin</b> 时为管理员，可在后台审核提交。
-          </div>
+        <div class="auth-tabs">
+          <button type="button" class="auth-tab ${realMode === "login" ? "active" : ""}" data-auth-switch="login">登录</button>
+          <button type="button" class="auth-tab ${realMode === "register" ? "active" : ""}" data-auth-switch="register">注册</button>
+        </div>
+
+        <div class="detail-section auth-fields">
+          <label class="auth-label" for="authIdentifier">邮箱或手机号</label>
+          <input id="authIdentifier" type="text" placeholder="邮箱或 11 位手机号" autocomplete="username" required />
+
+          <label class="auth-label" for="authPassword" style="margin-top:12px">密码</label>
+          <input id="authPassword" type="password" placeholder="至少 8 位，含字母+数字" autocomplete="${realMode === "register" ? "new-password" : "current-password"}" required />
+
+          ${realMode === "register" ? `
+            <label class="auth-label" for="authPassword2" style="margin-top:12px">确认密码</label>
+            <input id="authPassword2" type="password" placeholder="再次输入密码" autocomplete="new-password" required />
+            <label class="auth-label" for="authCaptcha" style="margin-top:12px">验证码（演示）</label>
+            <input id="authCaptcha" type="text" placeholder="任意 6 位数字" maxlength="6" required />
+            <label class="auth-check">
+              <input type="checkbox" id="authAgree" required />
+              <span>我已阅读并同意 <a href="#" data-noop="1">用户协议</a> 与 <a href="#" data-noop="1">隐私政策</a></span>
+            </label>
+          ` : `
+            <label class="auth-check auth-check--inline">
+              <input type="checkbox" id="authRemember" />
+              <span>记住我（演示：7 天 / 30 天）</span>
+            </label>
+            <select id="authRememberDays" class="auth-select" aria-label="免登录天数">
+              <option value="7">7 天</option>
+              <option value="30">30 天</option>
+            </select>
+            <button type="button" class="btn-text-link" id="authForgotBtn">忘记密码？</button>
+          `}
+
+          <label class="auth-label" for="authDisplayName" style="margin-top:12px">显示名称（可选）</label>
+          <input id="authDisplayName" type="text" placeholder="站内展示名；管理员演示可填 admin" />
+
+          <p class="section-desc auth-hint">演示：账号为 <b>admin</b> 或显示名为 <b>admin</b> 时分配管理员，可看到「后台管理」入口。</p>
         </div>
 
         <div class="detail-actions">
           <button type="button" class="btn-primary-lg" data-auth-submit data-auth-mode="${realMode}">
-            ${realMode === "register" ? "创建并登录" : "确认登录"}
+            ${realMode === "register" ? "注册并登录" : "登录"}
           </button>
         </div>
         <p id="authStatus" class="form-status"></p>
@@ -731,8 +898,17 @@ function openAuth(mode) {
   modal.classList.add("show");
   document.body.style.overflow = "hidden";
 
-  const input = $("#authUserName");
-  if (input) input.focus();
+  const idInput = $("#authIdentifier");
+  if (idInput) idInput.focus();
+
+  const forgot = $("#authForgotBtn");
+  if (forgot) forgot.addEventListener("click", () => {
+    alert("忘记密码：正式环境将通过邮箱/手机验证码重置。当前为静态演示，请重新注册或联系管理员。");
+  });
+
+  modal.querySelectorAll("[data-auth-switch]").forEach(btn => {
+    btn.addEventListener("click", () => openAuth(btn.dataset.authSwitch || "login"));
+  });
 }
 
 function closeAuthModal() {
@@ -744,6 +920,20 @@ function closeAuthModal() {
 
 /* ========== 页面导航（SPA 风格） ========== */
 function navigateTo(page) {
+  if (page === "admin") {
+    state.user = JSON.parse(localStorage.getItem(AUTH_USER_KEY) || "null");
+    if (!isLoggedIn()) {
+      openAuth("login");
+      const st = $("#authStatus");
+      if (st) st.textContent = "请先登录。仅管理员可访问后台。";
+      return;
+    }
+    if (!isAdmin()) {
+      alert("无权访问后台管理（仅管理员）。");
+      return;
+    }
+  }
+
   state.currentPage = page;
   $$('.page-section').forEach(el => {
     el.classList.toggle('active', el.dataset.page === page);
@@ -751,9 +941,10 @@ function navigateTo(page) {
   $$('.nav-link').forEach(a => {
     a.classList.toggle('active', a.dataset.nav === page);
   });
-  // 滚动到顶部
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  // 根据页面初始化内容
+  const km = document.querySelector(".knowledge-main");
+  if (km) km.scrollTop = 0;
+
   if (page === 'tools') {
     renderCategoryTabs();
     renderSortBtns();
@@ -761,8 +952,8 @@ function navigateTo(page) {
   } else if (page === 'home') {
     renderFeaturedTools();
     renderStats();
-  } else if (page === 'learn') {
-    renderLearningCards();
+  } else if (page === 'knowledge') {
+    initKnowledgePage();
   } else if (page === 'premium') {
     applyPremiumUI();
   } else if (page === 'user') {
@@ -842,10 +1033,10 @@ function initEvents() {
     if (logoutBtn) {
       state.user = null;
       persistUser();
+      updateAdminNavVisibility();
       closeAuthModal();
-      // 刷新用户/管理员页面
       if (state.currentPage === 'user') renderUserPage();
-      if (state.currentPage === 'admin') renderAdminPage();
+      if (state.currentPage === 'admin') navigateTo('home');
       return;
     }
 
@@ -855,7 +1046,7 @@ function initEvents() {
       state.premiumLevel = next;
       persistPremium();
       // 根据页面刷新内容
-      if (state.currentPage === 'learn') renderLearningCards();
+      if (state.currentPage === 'knowledge') initKnowledgePage();
       if (state.currentPage === 'premium') applyPremiumUI();
       if (state.currentPage === 'user') renderUserPage();
       return;
@@ -883,7 +1074,7 @@ function initEvents() {
         persistOrders();
       }
 
-      if (state.currentPage === 'learn') renderLearningCards();
+      if (state.currentPage === 'knowledge') initKnowledgePage();
       if (state.currentPage === 'premium') applyPremiumUI();
       if (state.currentPage === 'user') renderUserPage();
       return;
@@ -891,22 +1082,56 @@ function initEvents() {
 
     const authSubmitBtn = e.target.closest('[data-auth-submit]');
     if (authSubmitBtn) {
-      const userName = ($("#authUserName")?.value || "").trim();
-      const email = ($("#authEmail")?.value || "").trim();
+      const mode = authSubmitBtn.dataset.authMode === "register" ? "register" : "login";
+      const identifier = ($("#authIdentifier")?.value || "").trim();
+      const pw = ($("#authPassword")?.value || "").trim();
+      const displayName = ($("#authDisplayName")?.value || "").trim();
       const statusEl = $("#authStatus");
 
-      if (!userName) {
-        if (statusEl) statusEl.textContent = "请输入用户名。";
+      if (!identifier) {
+        if (statusEl) statusEl.textContent = "请输入邮箱或手机号。";
+        return;
+      }
+      const pwErr = validatePasswordRule(pw);
+      if (pwErr) {
+        if (statusEl) statusEl.textContent = pwErr;
         return;
       }
 
+      if (mode === "register") {
+        const pw2 = ($("#authPassword2")?.value || "").trim();
+        const agree = $("#authAgree")?.checked;
+        const captcha = ($("#authCaptcha")?.value || "").trim();
+        if (pw !== pw2) {
+          if (statusEl) statusEl.textContent = "两次密码不一致。";
+          return;
+        }
+        if (!agree) {
+          if (statusEl) statusEl.textContent = "请勾选同意用户协议与隐私政策。";
+          return;
+        }
+        if (captcha.length < 4) {
+          if (statusEl) statusEl.textContent = "请输入验证码（演示任意 4 位以上）。";
+          return;
+        }
+      } else {
+        const remember = $("#authRemember")?.checked;
+        const days = Number($("#authRememberDays")?.value || 7);
+        if (remember) localStorage.setItem("penguin-remember-days", String(days));
+        else localStorage.removeItem("penguin-remember-days");
+      }
+
+      const showName = displayName || identifier.split("@")[0] || "用户";
+      const isAdm = showName === "admin" || identifier === "admin" || /^admin@/i.test(identifier);
       state.user = {
         id: `u_${Date.now()}`,
-        name: userName,
-        email: email || null,
-        role: userName === "admin" ? "ADMIN" : "USER",
+        name: showName,
+        email: /@/.test(identifier) ? identifier : null,
+        phone: /^\d{11}$/.test(identifier) ? identifier : null,
+        role: isAdm ? "ADMIN" : "USER",
       };
       persistUser();
+      updateAdminNavVisibility();
       closeAuthModal();
 
       if (state.currentPage === 'user') renderUserPage();
@@ -1178,6 +1403,111 @@ function initEvents() {
     const btn = e.target.closest('[data-goto-tools]');
     if (btn) navigateTo('tools');
   });
+
+  window.addEventListener("hashchange", () => {
+    const { slug } = parseKnowledgeHash();
+    if (slug) navigateTo("knowledge");
+  });
+
+  document.addEventListener("click", e => {
+    const link = e.target.closest("a.knowledge-tree-link");
+    if (link) {
+      e.preventDefault();
+      navigateTo("knowledge");
+      renderKnowledgeArticle(link.dataset.knowledgeSlug);
+      const sidebar = $("#knowledgeSidebar");
+      const mask = $("#knowledgeSidebarMask");
+      sidebar?.classList.remove("knowledge-sidebar--open");
+      mask?.setAttribute("hidden", "");
+    }
+    const prev = e.target.closest(".knowledge-nav-btn");
+    if (prev?.dataset?.knowledgeSlug) {
+      e.preventDefault();
+      renderKnowledgeArticle(prev.dataset.knowledgeSlug);
+    }
+  });
+
+  document.addEventListener("click", e => {
+    const t = e.target.closest("[data-chapter-toggle]");
+    if (!t) return;
+    const id = t.dataset.chapterToggle;
+    const chapter = t.closest(".knowledge-chapter");
+    const list = chapter?.querySelector(".knowledge-section-list");
+    const icon = t.querySelector(".knowledge-chapter-icon");
+    if (!list) return;
+    list.hidden = !list.hidden;
+    localStorage.setItem(KNOWLEDGE_LS_CHAPTER + id, list.hidden ? "0" : "1");
+    if (icon) icon.textContent = list.hidden ? "▶" : "▼";
+    t.setAttribute("aria-expanded", String(!list.hidden));
+  });
+
+  const colBtn = $("#knowledgeCollapseBtn");
+  if (colBtn) {
+    colBtn.addEventListener("click", () => {
+      const cur = localStorage.getItem(KNOWLEDGE_LS_COLLAPSE) === "1";
+      localStorage.setItem(KNOWLEDGE_LS_COLLAPSE, cur ? "0" : "1");
+      applyKnowledgeSidebarCollapsed();
+    });
+  }
+
+  const mobToggle = $("#knowledgeSidebarToggle");
+  const mask = $("#knowledgeSidebarMask");
+  const sidebar = $("#knowledgeSidebar");
+  if (mobToggle && sidebar) {
+    mobToggle.addEventListener("click", () => {
+      sidebar.classList.toggle("knowledge-sidebar--open");
+      if (mask) {
+        if (sidebar.classList.contains("knowledge-sidebar--open")) mask.removeAttribute("hidden");
+        else mask.setAttribute("hidden", "");
+      }
+    });
+  }
+  if (mask && sidebar) {
+    mask.addEventListener("click", () => {
+      sidebar.classList.remove("knowledge-sidebar--open");
+      mask.setAttribute("hidden", "");
+    });
+  }
+
+  const ks = $("#knowledgeSearchInput");
+  if (ks) {
+    ks.addEventListener("input", () => {
+      const q = ks.value.trim().toLowerCase();
+      const box = $("#knowledgeSearchResults");
+      if (!box) return;
+      if (!q) {
+        box.hidden = true;
+        box.innerHTML = "";
+        return;
+      }
+      const hits = flattenKnowledgeSections().filter(s =>
+        (s.title + (s.markdown || "") + (s.excerpt || "")).toLowerCase().includes(q)
+      ).slice(0, 30);
+      box.hidden = false;
+      box.innerHTML = hits.length
+        ? hits.map(h => `
+            <button type="button" class="knowledge-search-hit" data-knowledge-slug="${h.slug}">
+              <span class="knowledge-hit-title">${escapeHtml(h.title)}</span>
+              <span class="knowledge-hit-meta">${escapeHtml(h.chapterTitle)}</span>
+            </button>`).join("")
+        : `<div class="knowledge-search-empty">无匹配小节</div>`;
+    });
+  }
+
+  document.addEventListener("click", e => {
+    const hit = e.target.closest(".knowledge-search-hit");
+    if (hit?.dataset?.knowledgeSlug) {
+      navigateTo("knowledge");
+      renderKnowledgeArticle(hit.dataset.knowledgeSlug);
+      const box = $("#knowledgeSearchResults");
+      if (box) {
+        box.hidden = true;
+        box.innerHTML = "";
+      }
+      const inp = $("#knowledgeSearchInput");
+      if (inp) inp.value = "";
+    }
+  });
 }
 
 /* ========== 移动端菜单 ========== */
@@ -1203,9 +1533,11 @@ function init() {
   initTheme();
   initEvents();
   initMobileMenu();
-  navigateTo('home');
+  updateAdminNavVisibility();
+  const { slug } = parseKnowledgeHash();
+  if (slug) navigateTo("knowledge");
+  else navigateTo("home");
   setTimeout(initScrollAnimations, 300);
-  // 页脚年份
   const yearEl = $("#year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 }

@@ -6,6 +6,9 @@
   <meta name="description" content="企鹅AI基地 - 一站式 AI 工具导航、学习资源与需求对接平台。发现最新 AI 工具，系统学习 AI 技能。" />
   <meta name="keywords" content="AI工具,AI导航,ChatGPT,Midjourney,AI学习,AI教程,人工智能" />
   <title>企鹅AI基地 - 一站式 AI 资源服务平台</title>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
@@ -20,11 +23,11 @@
     <nav id="mainNav" class="main-nav">
       <a href="#" class="nav-link active" data-nav="home">首页</a>
       <a href="#" class="nav-link" data-nav="tools">AI工具库</a>
-      <a href="#" class="nav-link" data-nav="learn">学习资源</a>
+      <a href="#" class="nav-link" data-nav="knowledge">知识库</a>
       <a href="#" class="nav-link" data-nav="market">需求市场</a>
       <a href="#" class="nav-link" data-nav="premium">会员专区</a>
       <a href="#" class="nav-link" data-nav="user">用户中心</a>
-      <a href="#" class="nav-link" data-nav="admin">后台管理</a>
+      <a href="#" class="nav-link nav-link--admin" id="navAdminLink" data-nav="admin" hidden>后台管理</a>
       <a href="#" class="nav-link" data-nav="submit">提交工具</a>
       <a href="#" class="nav-link" data-nav="about">关于我们</a>
     </nav>
@@ -219,15 +222,37 @@
   </section>
 </div>
 
-<!-- ==================== 学习资源 ==================== -->
-<div class="page-section" data-page="learn">
-  <section class="section container">
-    <div class="tools-page-header">
-      <h1 class="page-title">📚 学习资源</h1>
-      <p class="page-subtitle">系统化的 AI 学习教程与实战课程</p>
+<!-- ==================== AI 知识库（结构化导航 + Markdown） ==================== -->
+<div class="page-section" data-page="knowledge">
+  <div class="knowledge-shell">
+    <button type="button" id="knowledgeSidebarToggle" class="knowledge-mobile-toggle" aria-label="展开目录">☰ 目录</button>
+    <div id="knowledgeSidebarMask" class="knowledge-sidebar-mask" hidden></div>
+    <aside id="knowledgeSidebar" class="knowledge-sidebar">
+      <div class="knowledge-sidebar-head">
+        <button type="button" id="knowledgeCollapseBtn" class="knowledge-collapse-btn" title="收缩侧栏">⟨</button>
+        <span class="knowledge-sidebar-title">知识库目录</span>
+      </div>
+      <div class="knowledge-search-wrap">
+        <input type="search" id="knowledgeSearchInput" class="knowledge-search-input" placeholder="搜索标题与正文…" autocomplete="off" />
+        <div id="knowledgeSearchResults" class="knowledge-search-results" hidden></div>
+      </div>
+      <nav id="knowledgeTree" class="knowledge-tree" aria-label="知识库章节"></nav>
+    </aside>
+    <div class="knowledge-main">
+      <div class="knowledge-progress-track" aria-hidden="true">
+        <div id="knowledgeReadingBar" class="knowledge-reading-fill" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+      </div>
+      <article class="knowledge-article-wrap section container">
+        <header class="knowledge-article-header">
+          <p id="knowledgeBreadcrumb" class="knowledge-breadcrumb"></p>
+          <h1 id="knowledgeArticleTitle" class="page-title knowledge-article-title">知识库</h1>
+          <p id="knowledgeArticleExcerpt" class="page-subtitle"></p>
+        </header>
+        <div id="knowledgeArticleBody" class="knowledge-article-body markdown-body"></div>
+        <nav id="knowledgePrevNext" class="knowledge-prevnext" aria-label="上一篇下一篇"></nav>
+      </article>
     </div>
-    <div id="learningGrid" class="learning-grid"></div>
-  </section>
+  </div>
 </div>
 
 <!-- ==================== 需求市场 ==================== -->
@@ -353,33 +378,34 @@
       <p class="page-subtitle">让更多人发现你的 AI 工具</p>
     </div>
 
-    <!-- 收录方案 -->
-    <div class="submit-plans">
-      <label class="plan-card">
-        <input type="radio" name="submit-plan" value="free" checked />
-        <div class="plan-content">
+    <!-- 收录方案（radio + label 分离，避免点击区域与选中状态错乱） -->
+    <fieldset class="submit-plans" id="submitPlansFieldset">
+      <legend class="visually-hidden">选择收录方案</legend>
+      <div class="plan-card">
+        <input type="radio" name="submit-plan" id="plan-free" value="free" checked />
+        <label for="plan-free" class="plan-content">
           <div class="plan-name">免费收录</div>
           <div class="plan-price">¥0</div>
           <div class="plan-desc">7-14 天审核</div>
-        </div>
-      </label>
-      <label class="plan-card highlight">
-        <input type="radio" name="submit-plan" value="fast" />
-        <div class="plan-content">
+        </label>
+      </div>
+      <div class="plan-card highlight">
+        <input type="radio" name="submit-plan" id="plan-fast" value="fast" />
+        <label for="plan-fast" class="plan-content">
           <div class="plan-name">快速收录</div>
           <div class="plan-price">¥99</div>
           <div class="plan-desc">3 天内审核</div>
-        </div>
-      </label>
-      <label class="plan-card">
-        <input type="radio" name="submit-plan" value="featured" />
-        <div class="plan-content">
+        </label>
+      </div>
+      <div class="plan-card">
+        <input type="radio" name="submit-plan" id="plan-featured" value="featured" />
+        <label for="plan-featured" class="plan-content">
           <div class="plan-name">首页推荐</div>
           <div class="plan-price">¥299<small>/周</small></div>
           <div class="plan-desc">置顶展示 + 推荐标签</div>
-        </div>
-      </label>
-    </div>
+        </label>
+      </div>
+    </fieldset>
 
     <div class="card-section">
       <form id="submitToolForm" class="ticket-form">
@@ -507,27 +533,15 @@
       </div>
     </div>
 
-    <!-- 社群链接 -->
+    <!-- 微信群（按需求：移除飞书/GitHub/QQ；采用助手拉群 + 企业微信说明） -->
     <div class="card-section">
-      <h2>🌐 加入我们的社群</h2>
-      <p class="section-desc">与志同道合的 AI 爱好者交流学习</p>
-      <div class="community-links">
-        <a class="community-card" href="https://www.feishu.cn/" target="_blank" rel="noopener noreferrer">
-          <span class="comm-icon">📱</span>
-          <span class="comm-name">飞书群</span>
-        </a>
-        <a class="community-card" href="https://github.com/" target="_blank" rel="noopener noreferrer">
-          <span class="comm-icon">🐙</span>
-          <span class="comm-name">GitHub</span>
-        </a>
-        <a class="community-card" href="#" target="_blank" rel="noopener noreferrer">
-          <span class="comm-icon">💬</span>
-          <span class="comm-name">微信群</span>
-        </a>
-        <a class="community-card" href="#" target="_blank" rel="noopener noreferrer">
-          <span class="comm-icon">🎮</span>
-          <span class="comm-name">QQ群</span>
-        </a>
+      <h2>💬 加入微信群</h2>
+      <p class="section-desc">与志同道合的 AI 爱好者交流学习（运营方案：助手微信拉群 + 企业微信群长期入口）</p>
+      <div class="wechat-join-box">
+        <p><strong>方式一（推荐）：</strong>添加运营助手微信，备注「企鹅AI基地」，由助手邀请入群。</p>
+        <p class="wechat-placeholder">助手微信号：<span class="mono">请替换为实际微信号</span></p>
+        <p><strong>方式二：</strong>企业微信群（永久有效入口，需企业微信扫码；上线后替换下方二维码图片地址）。</p>
+        <div class="wechat-qrcode-placeholder">企业微信二维码占位</div>
       </div>
     </div>
   </section>
@@ -549,7 +563,7 @@
       <div class="footer-links">
         <h4>快速导航</h4>
         <a href="#" data-nav="tools">AI 工具库</a>
-        <a href="#" data-nav="learn">学习资源</a>
+        <a href="#" data-nav="knowledge">知识库</a>
         <a href="#" data-nav="market">需求市场</a>
         <a href="#" data-nav="submit">提交工具</a>
         <a href="#" data-nav="user">用户中心</a>
@@ -577,6 +591,13 @@
 <div id="detailModal" class="modal"></div>
 <div id="authModal" class="modal"></div>
 
+<script src="./knowledge-data.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
 <script src="./script.js"></script>
 </body>
 </html>
