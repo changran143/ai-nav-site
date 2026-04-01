@@ -964,9 +964,21 @@ body.light .premium-banner { background: linear-gradient(135deg, #4338ca, #6366f
   z-index: 50;
 }
 .knowledge-shell--collapsed .knowledge-sidebar {
-  width: 0;
+  width: 52px;
+  min-width: 52px;
   overflow: hidden;
   border: none;
+}
+.knowledge-shell--collapsed .knowledge-sidebar-head {
+  justify-content: center;
+}
+.knowledge-shell--collapsed .knowledge-sidebar-head .knowledge-sidebar-title,
+.knowledge-shell--collapsed .knowledge-search-wrap,
+.knowledge-shell--collapsed .knowledge-tree {
+  display: none;
+}
+.knowledge-shell--collapsed .knowledge-collapse-btn {
+  padding: 6px 8px;
 }
 .knowledge-sidebar-head {
   display: flex;
