@@ -511,6 +511,8 @@ function getDefaultKnowledgeSlug() {
 
 function initKnowledgePage() {
   renderKnowledgeTree();
+  // 确保侧边栏默认不收缩
+  localStorage.setItem(KNOWLEDGE_LS_COLLAPSE, "0");
   applyKnowledgeSidebarCollapsed();
   bindKnowledgeScrollProgress();
   const slug = parseKnowledgeHash().slug || getDefaultKnowledgeSlug();

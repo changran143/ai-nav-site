@@ -988,12 +988,19 @@ body.light .premium-banner { background: linear-gradient(135deg, #4338ca, #6366f
   border-bottom: 1px solid var(--border);
 }
 .knowledge-collapse-btn {
-  padding: 6px 10px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
+  font-size: 16px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
+  cursor: pointer;
+  color: var(--text-2);
   background: var(--surface-2);
-  color: var(--text);
-  font-size: 14px;
+  border: 1px solid var(--border);
+}
+.knowledge-collapse-btn:hover {
+  color: var(--brand);
+  background: var(--surface-3);
+  transform: scale(1.1);
 }
 .knowledge-sidebar-title { font-weight: 800; font-size: 14px; }
 .knowledge-search-wrap { position: relative; padding: 10px 12px; border-bottom: 1px solid var(--border); }
