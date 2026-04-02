@@ -442,6 +442,46 @@ function highlightKnowledgeCode() {
   });
 }
 
+// 自动加粗文章中的重点概念
+function autoBoldKeyTerms() {
+  const body = $("#knowledgeArticleBody");
+  if (!body) return;
+  
+  // 关键术语列表 - AI领域核心概念
+  const keyTerms = [
+    "人工智能", "AI", "机器学习", "深度学习", "神经网络",
+    "大语言模型", "LLM", "ChatGPT", "GPT", "Claude",
+    "Prompt", "提示词", "Token", "API", "OpenAI",
+    "图灵测试", "图灵机", "神经网络", "自然语言处理",
+    "生成式AI", "多模态", "算法", "模型", "训练",
+    "算力", "数据", "参数", "推理", "微调",
+    "Transformer", "注意力机制", "BERT", "GAN",
+    "计算机视觉", "CV", "语音识别", "NLP",
+    "Agent", "智能体", "RAG", "向量数据库",
+    "AI幻觉", "对齐", "安全", "伦理",
+    "Midjourney", "Stable Diffusion", "DALL-E",
+    "Copilot", "Cursor", "代码生成"
+  ];
+  
+  // 遍历所有段落，自动加粗关键词（只加粗首次出现）
+  const paragraphs = body.querySelectorAll('p');
+  const processedTerms = new Set();
+  
+  paragraphs.forEach(p => {
+    let html = p.innerHTML;
+    keyTerms.forEach(term => {
+      if (processedTerms.has(term)) return;
+      // 使用正则匹配完整词，避免部分匹配
+      const regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})(?![^<]*>)`, 'g');
+      if (regex.test(html)) {
+        html = html.replace(regex, '<strong>$1</strong>');
+        processedTerms.add(term);
+      }
+    });
+    p.innerHTML = html;
+  });
+}
+
 function renderKnowledgeArticle(slug) {
   const sec = findSectionBySlug(slug);
   const titleEl = $("#knowledgeArticleTitle");
@@ -461,6 +501,7 @@ function renderKnowledgeArticle(slug) {
 
   bodyEl.innerHTML = renderMarkdownToHtml(sec.markdown || "");
   highlightKnowledgeCode();
+  autoBoldKeyTerms(); // 自动加粗重点概念
 
   const { prev, next } = getPrevNext(slug);
   if (prevNextEl) {
