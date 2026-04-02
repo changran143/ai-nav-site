@@ -515,8 +515,18 @@ function initKnowledgePage() {
   localStorage.setItem(KNOWLEDGE_LS_COLLAPSE, "0");
   applyKnowledgeSidebarCollapsed();
   bindKnowledgeScrollProgress();
+  
+  // 重新绑定知识库相关事件
+  bindKnowledgeEvents();
+  
   const slug = parseKnowledgeHash().slug || getDefaultKnowledgeSlug();
   if (slug) renderKnowledgeArticle(slug);
+}
+
+function bindKnowledgeEvents() {
+  // Event listeners for knowledge sidebar elements are now handled in the main init() function.
+  // This function is kept for potential future knowledge-specific event bindings if needed,
+  // but it no longer re-binds the core sidebar toggle/collapse events.
 }
 
 function parseKnowledgeHash() {
@@ -532,8 +542,19 @@ function applyKnowledgeSidebarCollapsed() {
   const collapsed = localStorage.getItem(KNOWLEDGE_LS_COLLAPSE) === "1";
   const shell = document.querySelector(".knowledge-shell");
   const btn = $("#knowledgeCollapseBtn");
+  const sidebar = $("#knowledgeSidebar");
+  
+  console.log("应用侧边栏状态:", { collapsed, shell: !!shell, btn: !!btn, sidebar: !!sidebar });
+  
   if (shell) shell.classList.toggle("knowledge-shell--collapsed", collapsed);
   if (btn) btn.textContent = collapsed ? "⟩" : "⟨";
+  
+  // 强制确保桌面端侧边栏可见
+  if (sidebar && window.innerWidth > 768) {
+    sidebar.style.transform = "translateX(0)";
+    sidebar.classList.remove("knowledge-sidebar--open");
+    console.log("强制显示桌面端侧边栏");
+  }
 }
 
 function updateKnowledgeReadingProgress() {
