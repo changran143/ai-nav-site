@@ -1119,17 +1119,76 @@ body.light .premium-banner { background: linear-gradient(135deg, #4338ca, #6366f
   background: rgba(0,0,0,.45);
   z-index: 45;
 }
-.markdown-body { font-size: 15px; line-height: 1.75; color: var(--text-2); }
-.markdown-body h1 { font-size: 1.75rem; margin: 1.2em 0 0.6em; color: var(--text); }
-.markdown-body h2 { font-size: 1.35rem; margin: 1.2em 0 0.5em; color: var(--text); }
-.markdown-body p { margin: 0.75em 0; }
-.markdown-body ul, .markdown-body ol { margin: 0.75em 0; padding-left: 1.4em; }
-.markdown-body blockquote {
+/* 隐藏知识库正文中的第一个h1标题（避免与页面顶部标题重复） */
+.knowledge-article-body .markdown-body h1:first-child {
+  display: none;
+}
+
+.markdown-body {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-2);
+  max-width: 800px;
+}
+.markdown-body h1 {
+  font-size: 1.6rem;
+  margin: 1.5em 0 0.8em;
+  color: var(--text);
+  font-weight: 800;
+  line-height: 1.4;
+  padding-bottom: 0.4em;
+  border-bottom: 2px solid var(--brand);
+  display: inline-block;
+}
+.markdown-body h2 {
+  font-size: 1.25rem;
+  margin: 1.8em 0 0.8em;
+  color: var(--text);
+  font-weight: 700;
+  line-height: 1.4;
+}
+.markdown-body h3 {
+  font-size: 1.1rem;
+  margin: 1.5em 0 0.6em;
+  color: var(--text);
+  font-weight: 700;
+}
+.markdown-body p {
   margin: 1em 0;
-  padding: 10px 16px;
+  text-align: justify;
+}
+.markdown-body p + p {
+  margin-top: 1.2em;
+}
+.markdown-body ul, .markdown-body ol {
+  margin: 1em 0;
+  padding-left: 1.6em;
+}
+.markdown-body li {
+  margin: 0.5em 0;
+  line-height: 1.7;
+}
+.markdown-body li::marker {
+  color: var(--brand);
+}
+.markdown-body strong {
+  color: var(--text);
+  font-weight: 700;
+  background: linear-gradient(180deg, transparent 60%, rgba(99,102,241,0.15) 60%);
+  padding: 0 2px;
+}
+.markdown-body em {
+  color: var(--accent);
+  font-style: italic;
+}
+.markdown-body blockquote {
+  margin: 1.2em 0;
+  padding: 12px 20px;
   border-left: 4px solid var(--brand);
   background: var(--surface-2);
   color: var(--muted);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-size: 14px;
 }
 .markdown-body table {
   border-collapse: collapse;
