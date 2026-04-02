@@ -1,5 +1,5 @@
 /**
- * 企鹅AI基地 - 增强版主脚本
+ * 辟道AI基地 - 增强版主脚本
  * 功能：工具展示/搜索/筛选/排序、工具详情弹窗、提交工具、会员推广、邮件订阅、深浅主题等
  */
 
@@ -1001,7 +1001,7 @@ function initTheme() {
 
 /* ========== 工单/需求表单 ========== */
 function buildMailtoLink(fd) {
-  const subj = `【企鹅AI基地工单】${fd.title}`;
+  const subj = `【辟道AI基地工单】${fd.title}`;
   const body = [`称呼：${fd.name}`,`联系方式：${fd.contact}`,"",`需求内容：`,fd.content].join("\n");
   return `mailto:${RECEIVER_EMAIL}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;
 }

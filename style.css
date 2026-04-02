@@ -1120,15 +1120,23 @@ body.light .premium-banner { background: linear-gradient(135deg, #4338ca, #6366f
   z-index: 45;
 }
 /* 隐藏知识库正文中的第一个h1标题（避免与页面顶部标题重复） */
-.knowledge-article-body .markdown-body h1:first-child {
+/* 注意：knowledge-article-body 和 markdown-body 是同一个元素 */
+.knowledge-article-body.markdown-body > h1:first-child {
   display: none;
 }
 
-.markdown-body {
-  font-size: 15px;
-  line-height: 1.8;
+/* 知识库文章容器 - 优化阅读体验 */
+.knowledge-article-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 48px;
+}
+
+/* 知识库文章主体样式 */
+.knowledge-article-body.markdown-body {
+  font-size: 16px;
+  line-height: 1.9;
   color: var(--text-2);
-  max-width: 800px;
 }
 .markdown-body h1 {
   font-size: 1.6rem;
@@ -1475,6 +1483,14 @@ body.light .premium-banner { background: linear-gradient(135deg, #4338ca, #6366f
   .knowledge-shell--collapsed .knowledge-sidebar {
     width: min(320px, 92vw);
     overflow: hidden;
+  }
+  /* 知识库移动端页边距优化 */
+  .knowledge-article-wrap {
+    padding: 20px 24px;
+  }
+  .knowledge-article-body.markdown-body {
+    font-size: 15px;
+    line-height: 1.8;
   }
 }
 
